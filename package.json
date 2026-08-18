@@ -1,0 +1,16 @@
+{
+  "name": "live-data-firestore-dashboard",
+  "version": "1.0.0",
+  "description": "Realtime API to Firestore dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0"
+  }
+}
