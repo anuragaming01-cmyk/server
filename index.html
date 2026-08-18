@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Live Data Dashboard</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #070b14;
+      color: #f8fafc;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .header,
+    .card {
+      background: #101827;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+    }
+
+    .header {
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 21px;
+    }
+
+    .subtitle {
+      color: #8b98ad;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #4ade80;
+      font-size: 11px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 12px #22c55e;
+    }
+
+    .card {
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      padding: 17px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .latest {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      padding: 18px;
+    }
+
+    .box {
+      padding: 20px;
+      text-align: center;
+      background: rgba(255,255,255,.035);
+      border-radius: 15px;
+    }
+
+    .box span {
+      display: block;
+      color: #8b98ad;
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+
+    .box strong {
+      font-size: 21px;
+      word-break: break-all;
+    }
+
+    .search {
+      padding: 14px 18px;
+    }
+
+    input {
+      width: 100%;
+      height: 43px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      color: white;
+      outline: none;
+      padding: 0 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 13px;
+      font-size: 10px;
+      color: #8290a6;
+      background: rgba(255,255,255,.025);
+    }
+
+    td {
+      padding: 14px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.05);
+      font-size: 12px;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(59,130,246,.1);
+      color: #60a5fa;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .empty {
+      color: #8b98ad;
+      padding: 40px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    @media(max-width:650px) {
+
+      .latest {
+        grid-template-columns: 1fr;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .container {
+        padding: 10px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+
+    <div class="header-row">
+
+      <div>
+
+        <h1>
+          Live Data Dashboard
+        </h1>
+
+        <div class="subtitle">
+          Firestore Realtime History
+        </div>
+
+      </div>
+
+      <div class="status">
+
+        <span class="dot"></span>
+
+        <span id="status">
+          Connecting...
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      Latest Data
+    </div>
+
+    <div class="latest">
+
+      <div class="box">
+
+        <span>IDENTIFIER</span>
+
+        <strong id="latestId">
+          —
+        </strong>
+
+      </div>
+
+      <div class="box">
+
+        <span>VALUE</span>
+
+        <strong id="latestValue">
+          —
+        </strong>
+
+      </div>
+
+      <div class="box">
+
+        <span>TYPE</span>
+
+        <strong id="latestType">
+          —
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      Complete Firestore History
+    </div>
+
+    <div class="search">
+
+      <input
+        id="search"
+        placeholder="Search...">
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Identifier
+            </th>
+
+            <th>
+              Value
+            </th>
+
+            <th>
+              Type
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="history">
+
+          <tr>
+
+            <td
+              colspan="3"
+              class="empty">
+
+              Loading...
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  let records = [];
+
+
+  const history =
+    document.getElementById(
+      "history"
+    );
+
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+
+  const latestId =
+    document.getElementById(
+      "latestId"
+    );
+
+
+  const latestValue =
+    document.getElementById(
+      "latestValue"
+    );
+
+
+  const latestType =
+    document.getElementById(
+      "latestType"
+    );
+
+
+  const search =
+    document.getElementById(
+      "search"
+    );
+
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+
+      .replaceAll("&", "&amp;")
+
+      .replaceAll("<", "&lt;")
+
+      .replaceAll(">", "&gt;")
+
+      .replaceAll('"', "&quot;")
+
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  async function loadHistory() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/history",
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+        throw new Error(
+          "Server error"
+        );
+      }
+
+
+      records =
+        await response.json();
+
+
+      status.textContent =
+        "Realtime Connected";
+
+
+      render(records);
+
+    }
+
+    catch(error) {
+
+      console.error(error);
+
+      status.textContent =
+        "Connection Error";
+
+    }
+
+  }
+
+
+  function render(data) {
+
+    history.innerHTML = "";
+
+
+    if (!data.length) {
+
+      history.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="3"
+            class="empty">
+
+            No Firestore records found
+
+          </td>
+
+        </tr>
+
+      `;
+
+      latestId.textContent = "—";
+      latestValue.textContent = "—";
+      latestType.textContent = "—";
+
+      return;
+
+    }
+
+
+    latestId.textContent =
+      data[0].id || "—";
+
+
+    latestValue.textContent =
+      data[0].value || "—";
+
+
+    latestType.textContent =
+      data[0].type || "—";
+
+
+    data.forEach(item => {
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td class="value">
+          ${escapeHTML(item.id)}
+        </td>
+
+        <td>
+          ${escapeHTML(item.value)}
+        </td>
+
+        <td>
+
+          <span class="badge">
+            ${escapeHTML(item.type || "—")}
+          </span>
+
+        </td>
+
+      `;
+
+
+      history.appendChild(row);
+
+    });
+
+  }
+
+
+  search.addEventListener(
+    "input",
+    () => {
+
+      const q =
+        search.value
+          .trim()
+          .toLowerCase();
+
+
+      if (!q) {
+
+        render(records);
+
+        return;
+
+      }
+
+
+      const filtered =
+        records.filter(item =>
+
+          item.id
+            .toLowerCase()
+            .includes(q)
+
+          ||
+
+          item.value
+            .toLowerCase()
+            .includes(q)
+
+          ||
+
+          item.type
+            .toLowerCase()
+            .includes(q)
+
+        );
+
+
+      render(filtered);
+
+    }
+  );
+
+
+  loadHistory();
+
+
+  /*
+   * Refresh the UI every 5 seconds.
+   *
+   * For a true Firestore realtime client,
+   * use Firebase onSnapshot in the browser.
+   */
+
+  setInterval(
+    loadHistory,
+    5000
+  );
+
+</script>
+
+</body>
+
+</html>
