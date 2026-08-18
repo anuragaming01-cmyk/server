@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <title>MADDOX MODZ</title>
 
-  <title>Live Data Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --bg-0: #04060c;
+      --bg-1: #0a0e1a;
+      --card: rgba(20, 28, 48, 0.6);
+      --border: rgba(148, 163, 184, 0.1);
+      --border-strong: rgba(148, 163, 184, 0.25);
+      --text: #f8fafc;
+      --text-2: #94a3b8;
+      --text-3: #64748b;
+      --accent: #6366f1;
+      --grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+      --red: #ef4444;
+      --green: #22c55e;
+      --violet: #a855f7;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --shadow: 0 15px 40px -15px rgba(0, 0, 0, 0.6);
+    }
 
     * {
       box-sizing: border-box;
@@ -19,511 +36,2371 @@
       padding: 0;
     }
 
+    html,
     body {
-      font-family: Arial, sans-serif;
-      background: #070b14;
-      color: #f8fafc;
+      height: 100%;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 16px;
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(
+          ellipse 80% 50% at 15% -10%,
+          rgba(99, 102, 241, 0.15),
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse 70% 60% at 90% 10%,
+          rgba(139, 92, 246, 0.1),
+          transparent 60%
+        );
+      background-attachment: fixed;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    .header,
-    .card {
-      background: #101827;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 20px;
+    .app {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
     }
+
+    /* HEADER */
 
     .header {
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .header-row {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
     }
 
-    h1 {
-      font-size: 21px;
-    }
-
-    .subtitle {
-      color: #8b98ad;
-      font-size: 11px;
-      margin-top: 5px;
-    }
-
-    .status {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 7px;
-      color: #4ade80;
-      font-size: 11px;
+      gap: 14px;
     }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 12px #22c55e;
-    }
-
-    .card {
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-
-    .title {
-      padding: 17px 18px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .latest {
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: var(--bg-1);
+      border: 1px solid var(--border-strong);
       display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 12px;
-      padding: 18px;
+      place-items: center;
+      overflow: hidden;
     }
 
-    .box {
-      padding: 20px;
-      text-align: center;
-      background: rgba(255,255,255,.035);
-      border-radius: 15px;
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
     }
 
-    .box span {
+    .brand h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(180deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand p {
+      font-size: 11px;
+      color: var(--text-2);
+      margin-top: 2px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .status-bar.online {
+      border-color: rgba(34, 197, 94, 0.35);
+      box-shadow: 0 0 15px -4px rgba(34, 197, 94, 0.3);
+    }
+
+    .status-bar.online .status-dot {
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    .status-bar.error {
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    .status-bar.error .status-dot {
+      background: var(--red);
+    }
+
+    .status-bar.loading .status-dot {
+      background: var(--accent);
+      animation: pulse 1s infinite;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--text-3);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px transparent;
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 transparent;
+      }
+    }
+
+    /* LATEST */
+
+    .latest-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .latest-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .latest-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--red);
+      padding: 4px 10px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 999px;
+    }
+
+    .live-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .latest-body {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .big-ball {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 64px;
+      font-weight: 900;
+      font-family: "JetBrains Mono", monospace;
+      color: white;
+      box-shadow:
+        0 15px 35px -8px rgba(0, 0, 0, 0.6),
+        inset 0 -8px 20px rgba(0, 0, 0, 0.4),
+        inset 0 8px 20px rgba(255, 255, 255, 0.25);
+    }
+
+    .big-ball.pop {
+      animation: pop 0.4s ease;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0.8);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .big-ball.red {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #ff6b6b,
+          #dc2626 70%,
+          #991b1b
+        );
+    }
+
+    .big-ball.green {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #4ade80,
+          #16a34a 70%,
+          #15803d
+        );
+    }
+
+    .big-ball.violet {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #c084fc,
+          #9333ea 70%,
+          #6b21a8
+        );
+    }
+
+    .big-ball.red-violet {
+      background:
+        conic-gradient(
+          from 180deg,
+          #dc2626 0deg 180deg,
+          #9333ea 180deg 360deg
+        );
+    }
+
+    .big-ball.green-violet {
+      background:
+        conic-gradient(
+          from 180deg,
+          #16a34a 0deg 180deg,
+          #9333ea 180deg 360deg
+        );
+    }
+
+    .big-ball.neutral {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #475569,
+          #1e293b 70%,
+          #0f172a
+        );
+    }
+
+    .latest-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .meta-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+
+    .meta-box label {
       display: block;
-      color: #8b98ad;
       font-size: 10px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       margin-bottom: 8px;
     }
 
-    .box strong {
-      font-size: 21px;
+    .meta-box .val {
+      font-size: 15px;
+      font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
       word-break: break-all;
     }
 
-    .search {
-      padding: 14px 18px;
+    /* PILLS */
+
+    .color-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
-    input {
-      width: 100%;
-      height: 43px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+    }
+
+    .pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .pill.red {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .pill.red .dot {
+      background: var(--red);
+    }
+
+    .pill.green {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    .pill.green .dot {
+      background: var(--green);
+    }
+
+    .pill.violet {
+      background: rgba(168, 85, 247, 0.12);
+      color: #d8b4fe;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .pill.violet .dot {
+      background: var(--violet);
+    }
+
+    .size-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-2);
+    }
+
+    .size-badge.big {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .size-badge.small {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+
+    .stat label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .stat label .d {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .stat .num {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .stat.s-red label .d {
+      background: var(--red);
+    }
+
+    .stat.s-green label .d {
+      background: var(--green);
+    }
+
+    .stat.s-violet label .d {
+      background: var(--violet);
+    }
+
+    .stat.s-big label .d {
+      background: #f59e0b;
+    }
+
+    .stat.s-small label .d {
+      background: #22c55e;
+    }
+
+    .stat.s-total label .d {
+      background: var(--accent);
+    }
+
+    .stat.s-total .num {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* HISTORY */
+
+    .history-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .history-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-head h2 {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-head h2 .count {
+      font-size: 11px;
+      color: var(--text-2);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 13px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-btn:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
       color: white;
-      outline: none;
-      padding: 0 14px;
+    }
+
+    .filter-btn .d {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .filter-btn[data-f="red"] .d {
+      background: var(--red);
+    }
+
+    .filter-btn[data-f="green"] .d {
+      background: var(--green);
+    }
+
+    .filter-btn[data-f="violet"] .d {
+      background: var(--violet);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      max-height: 700px;
+      overflow-y: auto;
+    }
+
+    .table-wrap::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .table-wrap::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.15);
+      border-radius: 3px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 720px;
     }
 
-    th {
-      padding: 13px;
-      font-size: 10px;
-      color: #8290a6;
-      background: rgba(255,255,255,.025);
-    }
-
-    td {
-      padding: 14px;
+    thead th {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 14, 26, 0.98);
+      padding: 14px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
       text-align: center;
-      border-top: 1px solid rgba(255,255,255,.05);
-      font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      z-index: 2;
     }
 
-    .value {
-      font-weight: bold;
+    thead th:first-child {
+      text-align: left;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
+    tbody td {
+      padding: 12px 16px;
+      font-size: 13px;
+      text-align: center;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+    }
+
+    tbody td.issue {
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 12.5px;
+    }
+
+    .ball {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: white;
+      font-family: "JetBrains Mono", monospace;
+      box-shadow:
+        0 4px 10px -2px rgba(0, 0, 0, 0.4),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+        inset 0 3px 8px rgba(255, 255, 255, 0.3);
+    }
+
+    .ball.red {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #ff6b6b,
+          #dc2626 70%,
+          #991b1b
+        );
+    }
+
+    .ball.green {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #4ade80,
+          #16a34a 70%,
+          #15803d
+        );
+    }
+
+    .ball.violet {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #c084fc,
+          #9333ea 70%,
+          #6b21a8
+        );
+    }
+
+    .ball.red-violet {
+      background:
+        conic-gradient(
+          from 180deg,
+          #dc2626 0deg 180deg,
+          #9333ea 180deg 360deg
+        );
+    }
+
+    .ball.green-violet {
+      background:
+        conic-gradient(
+          from 180deg,
+          #16a34a 0deg 180deg,
+          #9333ea 180deg 360deg
+        );
+    }
+
+    .ball.neutral {
+      background:
+        radial-gradient(
+          circle at 30% 30%,
+          #475569,
+          #1e293b 70%,
+          #0f172a
+        );
+    }
+
+    .empty-row td {
+      padding: 60px 20px !important;
+      color: var(--text-3);
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 2.5px solid rgba(99, 102, 241, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(10, 14, 26, 0.98);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 12px 20px;
       border-radius: 999px;
-      background: rgba(59,130,246,.1);
-      color: #60a5fa;
-      font-size: 10px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 100;
     }
 
-    .empty {
-      color: #8b98ad;
-      padding: 40px;
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
 
-    .table-wrap {
-      overflow-x: auto;
+    .toast .icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
     }
 
-    @media(max-width:650px) {
+    .toast.success .icon {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--green);
+    }
 
-      .latest {
+    .toast.error .icon {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--red);
+    }
+
+    .toast.info .icon {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent);
+    }
+
+    @media (max-width: 760px) {
+      .latest-body {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 22px;
+      }
+
+      .big-ball {
+        margin: 0 auto;
+        width: 120px;
+        height: 120px;
+        font-size: 52px;
+      }
+
+      .latest-meta {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 18px 10px 40px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .latest-meta {
         grid-template-columns: 1fr;
       }
 
-      .status {
-        display: none;
+      .status-bar {
+        width: 100%;
+        justify-content: center;
       }
-
-      .container {
-        padding: 10px;
-      }
-
     }
-
   </style>
-
 </head>
 
 <body>
 
-<div class="container">
+  <div class="app">
 
-  <div class="header">
+    <header class="header">
 
-    <div class="header-row">
+      <div class="brand">
 
-      <div>
+        <div class="logo">
+          <img
+            src="https://i.ibb.co.com/mgjtz8t/logo-1.png"
+            alt="MADDOX MODZ Logo"
+          >
+        </div>
 
-        <h1>
-          Live Data Dashboard
-        </h1>
-
-        <div class="subtitle">
-          Firestore Realtime History
+        <div>
+          <h1>MADDOX MODZ</h1>
+          <p>Wingo Results • 30s</p>
         </div>
 
       </div>
 
-      <div class="status">
+      <div
+        id="statusBar"
+        class="status-bar loading"
+      >
+        <span class="status-dot"></span>
+        <span id="statusText">Connecting…</span>
+      </div>
 
-        <span class="dot"></span>
+    </header>
 
-        <span id="status">
-          Connecting...
+
+    <!-- LATEST -->
+
+    <section class="latest-card">
+
+      <div class="latest-header">
+
+        <h2>Latest Result</h2>
+
+        <span class="live-badge">
+          LIVE
         </span>
 
       </div>
 
-    </div>
+      <div class="latest-body">
+
+        <div
+          id="bigBall"
+          class="big-ball neutral"
+        >
+          -
+        </div>
+
+        <div class="latest-meta">
+
+          <div class="meta-box">
+
+            <label>
+              Issue / Round
+            </label>
+
+            <div
+              id="latestIssue"
+              class="val"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="meta-box">
+
+            <label>
+              Color
+            </label>
+
+            <div
+              id="latestColors"
+              class="color-pills"
+            >
+              <span class="pill">
+                <span
+                  class="dot"
+                  style="background:var(--text-3)"
+                ></span>
+                —
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="meta-box">
+
+            <label>
+              Size
+            </label>
+
+            <div
+              id="latestSize"
+              style="margin-top:4px"
+            >
+              <span class="size-badge">
+                —
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+      <div class="stat s-total">
+        <label>
+          <span class="d"></span>
+          Total
+        </label>
+        <div
+          class="num"
+          id="statTotal"
+        >
+          0
+        </div>
+      </div>
+
+      <div class="stat s-red">
+        <label>
+          <span class="d"></span>
+          Red
+        </label>
+        <div
+          class="num"
+          id="statRed"
+        >
+          0
+        </div>
+      </div>
+
+      <div class="stat s-green">
+        <label>
+          <span class="d"></span>
+          Green
+        </label>
+        <div
+          class="num"
+          id="statGreen"
+        >
+          0
+        </div>
+      </div>
+
+      <div class="stat s-violet">
+        <label>
+          <span class="d"></span>
+          Violet
+        </label>
+        <div
+          class="num"
+          id="statViolet"
+        >
+          0
+        </div>
+      </div>
+
+      <div class="stat s-big">
+        <label>
+          <span class="d"></span>
+          Big
+        </label>
+        <div
+          class="num"
+          id="statBig"
+        >
+          0
+        </div>
+      </div>
+
+      <div class="stat s-small">
+        <label>
+          <span class="d"></span>
+          Small
+        </label>
+        <div
+          class="num"
+          id="statSmall"
+        >
+          0
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+
+    <section class="history-card">
+
+      <div class="history-head">
+
+        <h2>
+          Result History
+
+          <span
+            class="count"
+            id="rowCount"
+          >
+            0
+          </span>
+
+        </h2>
+
+        <div class="controls">
+
+          <button
+            class="filter-btn active"
+            data-f="all"
+          >
+            All
+          </button>
+
+          <button
+            class="filter-btn"
+            data-f="red"
+          >
+            <span class="d"></span>
+            Red
+          </button>
+
+          <button
+            class="filter-btn"
+            data-f="green"
+          >
+            <span class="d"></span>
+            Green
+          </button>
+
+          <button
+            class="filter-btn"
+            data-f="violet"
+          >
+            <span class="d"></span>
+            Violet
+          </button>
+
+          <button
+            class="filter-btn"
+            data-f="big"
+          >
+            Big
+          </button>
+
+          <button
+            class="filter-btn"
+            data-f="small"
+          >
+            Small
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Issue</th>
+              <th>Number</th>
+              <th>Color</th>
+              <th>Size</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="historyBody">
+
+            <tr class="empty-row">
+
+              <td colspan="4">
+
+                <div class="spinner"></div>
+
+                Loading real-time data…
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
 
   </div>
 
 
-  <div class="card">
+  <!-- TOAST -->
 
-    <div class="title">
-      Latest Data
-    </div>
+  <div
+    id="toast"
+    class="toast"
+  >
 
-    <div class="latest">
+    <div class="icon">
 
-      <div class="box">
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
 
-        <span>IDENTIFIER</span>
+        <polyline points="20 6 9 17 4 12"></polyline>
 
-        <strong id="latestId">
-          —
-        </strong>
-
-      </div>
-
-      <div class="box">
-
-        <span>VALUE</span>
-
-        <strong id="latestValue">
-          —
-        </strong>
-
-      </div>
-
-      <div class="box">
-
-        <span>TYPE</span>
-
-        <strong id="latestType">
-          —
-        </strong>
-
-      </div>
+      </svg>
 
     </div>
+
+    <span id="toastMsg">
+      Ready
+    </span>
 
   </div>
 
 
-  <div class="card">
+  <!-- FIREBASE -->
 
-    <div class="title">
-      Complete Firestore History
-    </div>
+  <script type="module">
 
-    <div class="search">
-
-      <input
-        id="search"
-        placeholder="Search...">
-
-    </div>
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>
-              Identifier
-            </th>
-
-            <th>
-              Value
-            </th>
-
-            <th>
-              Type
-            </th>
-
-          </tr>
-
-        </thead>
-
-        <tbody id="history">
-
-          <tr>
-
-            <td
-              colspan="3"
-              class="empty">
-
-              Loading...
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</div>
+    import {
+      initializeApp
+    } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 
-<script>
-
-  let records = [];
-
-
-  const history =
-    document.getElementById(
-      "history"
-    );
-
-
-  const status =
-    document.getElementById(
-      "status"
-    );
+    import {
+      getFirestore,
+      collection,
+      doc,
+      query,
+      orderBy,
+      onSnapshot,
+      serverTimestamp,
+      writeBatch
+    } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-  const latestId =
-    document.getElementById(
-      "latestId"
-    );
+    /*
+     * =========================================
+     * FIREBASE CONFIG
+     * =========================================
+     */
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyB8BfSkcBtHrg7BTNn45jsP50Qq9uGb6_w",
+
+      authDomain:
+        "appp-42a6a.firebaseapp.com",
+
+      databaseURL:
+        "https://appp-42a6a-default-rtdb.firebaseio.com",
+
+      projectId:
+        "appp-42a6a",
+
+      storageBucket:
+        "appp-42a6a.firebasestorage.app",
+
+      messagingSenderId:
+        "872001684356",
+
+      appId:
+        "1:872001684356:web:4c18d2296a149c771613d1"
+
+    };
 
 
-  const latestValue =
-    document.getElementById(
-      "latestValue"
-    );
+    const app =
+      initializeApp(firebaseConfig);
 
 
-  const latestType =
-    document.getElementById(
-      "latestType"
-    );
+    const db =
+      getFirestore(app);
 
 
-  const search =
-    document.getElementById(
-      "search"
-    );
+    /*
+     * =========================================
+     * API
+     * =========================================
+     */
+
+    const API_URL =
+      "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json";
 
 
-  function escapeHTML(value) {
+    /*
+     * =========================================
+     * ELEMENTS
+     * =========================================
+     */
 
-    return String(value ?? "")
+    const elements = {
 
-      .replaceAll("&", "&amp;")
+      statusBar:
+        document.getElementById("statusBar"),
 
-      .replaceAll("<", "&lt;")
+      statusText:
+        document.getElementById("statusText"),
 
-      .replaceAll(">", "&gt;")
+      historyBody:
+        document.getElementById("historyBody"),
 
-      .replaceAll('"', "&quot;")
+      bigBall:
+        document.getElementById("bigBall"),
 
-      .replaceAll("'", "&#039;");
+      latestIssue:
+        document.getElementById("latestIssue"),
 
-  }
+      latestColors:
+        document.getElementById("latestColors"),
+
+      latestSize:
+        document.getElementById("latestSize"),
+
+      rowCount:
+        document.getElementById("rowCount"),
+
+      statTotal:
+        document.getElementById("statTotal"),
+
+      statRed:
+        document.getElementById("statRed"),
+
+      statGreen:
+        document.getElementById("statGreen"),
+
+      statViolet:
+        document.getElementById("statViolet"),
+
+      statBig:
+        document.getElementById("statBig"),
+
+      statSmall:
+        document.getElementById("statSmall"),
+
+      toastEl:
+        document.getElementById("toast"),
+
+      toastMsg:
+        document.getElementById("toastMsg")
+
+    };
 
 
-  async function loadHistory() {
+    let allResults = [];
 
-    try {
+    let currentFilter = "all";
+
+    let knownIssueSet = new Set();
+
+    let lastLatestIssue = null;
+
+    let updateRunning = false;
+
+
+    /*
+     * =========================================
+     * STATUS
+     * =========================================
+     */
+
+    function setStatus(
+      text,
+      type = "loading"
+    ) {
+
+      elements.statusText.textContent =
+        text;
+
+      elements.statusBar.className =
+        "status-bar " + type;
+
+    }
+
+
+    /*
+     * =========================================
+     * TOAST
+     * =========================================
+     */
+
+    let toastTimer;
+
+
+    function toast(
+      message,
+      type = "info"
+    ) {
+
+      elements.toastMsg.textContent =
+        message;
+
+      elements.toastEl.className =
+        "toast show " + type;
+
+      clearTimeout(toastTimer);
+
+      toastTimer =
+        setTimeout(
+          () => {
+
+            elements.toastEl.classList.remove(
+              "show"
+            );
+
+          },
+          3000
+        );
+
+    }
+
+
+    /*
+     * =========================================
+     * SECURITY
+     * =========================================
+     */
+
+    function escapeHTML(value) {
+
+      return String(value ?? "")
+
+        .replaceAll("&", "&amp;")
+
+        .replaceAll("<", "&lt;")
+
+        .replaceAll(">", "&gt;")
+
+        .replaceAll('"', "&quot;")
+
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    /*
+     * =========================================
+     * COLOR
+     * =========================================
+     */
+
+    function getColorSet(numberStr) {
+
+      const n =
+        parseInt(
+          numberStr,
+          10
+        );
+
+
+      if (
+        Number.isNaN(n)
+      ) {
+
+        return [];
+
+      }
+
+
+      if (n === 0) {
+
+        return [
+          "red",
+          "violet"
+        ];
+
+      }
+
+
+      if (n === 5) {
+
+        return [
+          "green",
+          "violet"
+        ];
+
+      }
+
+
+      if (n % 2 === 0) {
+
+        return ["red"];
+
+      }
+
+
+      return ["green"];
+
+    }
+
+
+    /*
+     * =========================================
+     * BALL
+     * =========================================
+     */
+
+    function getBallClass(numberStr) {
+
+      const n =
+        parseInt(
+          numberStr,
+          10
+        );
+
+
+      if (
+        Number.isNaN(n)
+      ) {
+
+        return "neutral";
+
+      }
+
+
+      if (n === 0) {
+
+        return "red-violet";
+
+      }
+
+
+      if (n === 5) {
+
+        return "green-violet";
+
+      }
+
+
+      if (n % 2 === 0) {
+
+        return "red";
+
+      }
+
+
+      return "green";
+
+    }
+
+
+    /*
+     * =========================================
+     * SIZE
+     * =========================================
+     */
+
+    function getSize(numberStr) {
+
+      const n =
+        parseInt(
+          numberStr,
+          10
+        );
+
+
+      if (
+        Number.isNaN(n)
+      ) {
+
+        return "—";
+
+      }
+
+
+      return n >= 5
+        ? "Big"
+        : "Small";
+
+    }
+
+
+    /*
+     * =========================================
+     * API FETCH
+     * =========================================
+     */
+
+    async function getApiData() {
 
       const response =
         await fetch(
-          "/api/history",
+          API_URL,
           {
-            cache: "no-store"
+            method: "GET",
+            cache: "no-store",
+            headers: {
+              Accept:
+                "application/json"
+            }
           }
         );
 
 
       if (!response.ok) {
+
         throw new Error(
-          "Server error"
+          "API HTTP " +
+          response.status
         );
+
       }
 
 
-      records =
-        await response.json();
-
-
-      status.textContent =
-        "Realtime Connected";
-
-
-      render(records);
-
-    }
-
-    catch(error) {
-
-      console.error(error);
-
-      status.textContent =
-        "Connection Error";
-
-    }
-
-  }
-
-
-  function render(data) {
-
-    history.innerHTML = "";
-
-
-    if (!data.length) {
-
-      history.innerHTML = `
-
-        <tr>
-
-          <td
-            colspan="3"
-            class="empty">
-
-            No Firestore records found
-
-          </td>
-
-        </tr>
-
-      `;
-
-      latestId.textContent = "—";
-      latestValue.textContent = "—";
-      latestType.textContent = "—";
-
-      return;
+      return await response.json();
 
     }
 
 
-    latestId.textContent =
-      data[0].id || "—";
+    /*
+     * =========================================
+     * FIND API ARRAY
+     * =========================================
+     */
+
+    function findResultArray(data) {
+
+      if (!data) {
+
+        return [];
+
+      }
 
 
-    latestValue.textContent =
-      data[0].value || "—";
+      if (
+        Array.isArray(data)
+      ) {
+
+        return data;
+
+      }
 
 
-    latestType.textContent =
-      data[0].type || "—";
+      if (
+        data.data &&
+        Array.isArray(data.data)
+      ) {
+
+        return data.data;
+
+      }
 
 
-    data.forEach(item => {
+      if (
+        data.data &&
+        Array.isArray(data.data.list)
+      ) {
 
-      const row =
-        document.createElement("tr");
+        return data.data.list;
 
-
-      row.innerHTML = `
-
-        <td class="value">
-          ${escapeHTML(item.id)}
-        </td>
-
-        <td>
-          ${escapeHTML(item.value)}
-        </td>
-
-        <td>
-
-          <span class="badge">
-            ${escapeHTML(item.type || "—")}
-          </span>
-
-        </td>
-
-      `;
+      }
 
 
-      history.appendChild(row);
+      if (
+        data.result &&
+        Array.isArray(data.result)
+      ) {
 
-    });
+        return data.result;
 
-  }
+      }
 
 
-  search.addEventListener(
-    "input",
-    () => {
+      if (
+        data.result &&
+        Array.isArray(data.result.list)
+      ) {
+
+        return data.result.list;
+
+      }
+
+
+      return [];
+
+    }
+
+
+    /*
+     * =========================================
+     * NORMALIZE
+     * =========================================
+     */
+
+    function normalizeResult(item) {
+
+      if (
+        !item ||
+        typeof item !== "object"
+      ) {
+
+        return null;
+
+      }
+
+
+      const issue =
+        item.issueNumber ??
+        item.issue ??
+        item.issueNo ??
+        item.period ??
+        item.roundId ??
+        item.round ??
+        item.id;
+
+
+      const number =
+        item.number ??
+        item.result ??
+        item.resultNumber ??
+        item.openNumber ??
+        item.code;
+
+
+      if (
+        issue === undefined ||
+        issue === null
+      ) {
+
+        return null;
+
+      }
+
+
+      return {
+
+        issue:
+          String(issue),
+
+        number:
+          number === undefined ||
+          number === null
+            ? ""
+            : String(number)
+
+      };
+
+    }
+
+
+    /*
+     * =========================================
+     * REALTIME FIRESTORE LISTENER
+     *
+     * NO LIMIT
+     * =========================================
+     */
+
+    function startRealtimeListener() {
 
       const q =
-        search.value
-          .trim()
-          .toLowerCase();
+        query(
+          collection(
+            db,
+            "wingo_results"
+          ),
+          orderBy(
+            "savedAt",
+            "desc"
+          )
+        );
 
 
-      if (!q) {
+      onSnapshot(
 
-        render(records);
+        q,
+
+        snapshot => {
+
+          allResults = [];
+
+
+          snapshot.forEach(
+            documentSnapshot => {
+
+              const data =
+                documentSnapshot.data();
+
+
+              allResults.push({
+
+                issueNumber:
+                  data.issueNumber ?? "",
+
+                number:
+                  data.number ?? "",
+
+                savedAt:
+                  data.savedAt ?? null
+
+              });
+
+            }
+          );
+
+
+          knownIssueSet =
+            new Set(
+              allResults.map(
+                result =>
+                  String(
+                    result.issueNumber
+                  )
+              )
+            );
+
+
+          renderLatest();
+
+          renderStats();
+
+          renderHistory();
+
+
+          elements.rowCount.textContent =
+            allResults.length.toLocaleString();
+
+
+          setStatus(
+            `Online • ${allResults.length.toLocaleString()} results`,
+            "online"
+          );
+
+        },
+
+        error => {
+
+          console.error(
+            "Firestore listener error:",
+            error
+          );
+
+
+          setStatus(
+            "Firestore connection error",
+            "error"
+          );
+
+
+          toast(
+            "Firestore realtime connection error",
+            "error"
+          );
+
+        }
+
+      );
+
+    }
+
+
+    /*
+     * =========================================
+     * SAVE RESULTS
+     *
+     * BATCH WRITE
+     * =========================================
+     */
+
+    async function saveResultsBatch(
+      results
+    ) {
+
+      if (
+        !results.length
+      ) {
+
+        return 0;
+
+      }
+
+
+      let savedCount = 0;
+
+
+      /*
+       * Firestore batch maximum:
+       * 500 writes
+       */
+
+      const BATCH_LIMIT = 500;
+
+
+      for (
+        let i = 0;
+        i < results.length;
+        i += BATCH_LIMIT
+      ) {
+
+        const chunk =
+          results.slice(
+            i,
+            i + BATCH_LIMIT
+          );
+
+
+        const batch =
+          writeBatch(db);
+
+
+        for (
+          const result of chunk
+        ) {
+
+          const safeId =
+            String(result.issue)
+              .replace(
+                /[\/\\.#$[\]]/g,
+                "_"
+              );
+
+
+          const resultRef =
+            doc(
+              db,
+              "wingo_results",
+              safeId
+            );
+
+
+          batch.set(
+            resultRef,
+            {
+
+              issueNumber:
+                result.issue,
+
+              number:
+                result.number,
+
+              source:
+                "WinGo API",
+
+              apiUrl:
+                API_URL,
+
+              savedAt:
+                serverTimestamp()
+
+            },
+            {
+              merge: true
+            }
+          );
+
+        }
+
+
+        await batch.commit();
+
+
+        savedCount +=
+          chunk.length;
+
+      }
+
+
+      return savedCount;
+
+    }
+
+
+    /*
+     * =========================================
+     * UPDATE API → FIRESTORE
+     * =========================================
+     */
+
+    async function updateResults() {
+
+      /*
+       * Prevent overlapping
+       * update calls.
+       */
+
+      if (
+        updateRunning
+      ) {
+
+        return;
+
+      }
+
+
+      updateRunning = true;
+
+
+      try {
+
+        setStatus(
+          "Fetching live data...",
+          "loading"
+        );
+
+
+        const apiData =
+          await getApiData();
+
+
+        const rawResults =
+          findResultArray(
+            apiData
+          );
+
+
+        if (
+          !rawResults.length
+        ) {
+
+          throw new Error(
+            "API returned no results"
+          );
+
+        }
+
+
+        const newResults = [];
+
+
+        /*
+         * Find only new issues.
+         */
+
+        for (
+          const item of rawResults
+        ) {
+
+          const result =
+            normalizeResult(
+              item
+            );
+
+
+          if (
+            !result ||
+            !result.issue
+          ) {
+
+            continue;
+
+          }
+
+
+          if (
+            knownIssueSet.has(
+              result.issue
+            )
+          ) {
+
+            continue;
+
+          }
+
+
+          newResults.push(
+            result
+          );
+
+        }
+
+
+        /*
+         * No new data
+         */
+
+        if (
+          !newResults.length
+        ) {
+
+          setStatus(
+            `Online • ${allResults.length.toLocaleString()} results`,
+            "online"
+          );
+
+          updateRunning =
+            false;
+
+          return;
+
+        }
+
+
+        /*
+         * Save using batch
+         */
+
+        const savedCount =
+          await saveResultsBatch(
+            newResults
+          );
+
+
+        /*
+         * Update local set immediately
+         */
+
+        for (
+          const result of newResults
+        ) {
+
+          knownIssueSet.add(
+            result.issue
+          );
+
+        }
+
+
+        setStatus(
+          `Online • ${savedCount} new`,
+          "online"
+        );
+
+
+        toast(
+          `${savedCount} new result${savedCount > 1 ? "s" : ""} saved`,
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Update error:",
+          error
+        );
+
+
+        setStatus(
+          "API connection error",
+          "error"
+        );
+
+
+        toast(
+          error.message ||
+          "Update failed",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        updateRunning =
+          false;
+
+      }
+
+    }
+
+
+    /*
+     * =========================================
+     * LATEST
+     * =========================================
+     */
+
+    function renderLatest() {
+
+      if (
+        !allResults.length
+      ) {
+
+        elements.bigBall.textContent =
+          "—";
+
+        elements.bigBall.className =
+          "big-ball neutral";
+
+        elements.latestIssue.textContent =
+          "—";
+
+        elements.latestColors.innerHTML =
+          `<span class="pill">
+            <span
+              class="dot"
+              style="background:var(--text-3)"
+            ></span>
+            —
+          </span>`;
+
+        elements.latestSize.innerHTML =
+          `<span class="size-badge">
+            —
+          </span>`;
+
+        return;
+
+      }
+
+
+      const latest =
+        allResults[0];
+
+
+      const num =
+        latest.number;
+
+
+      const ballClass =
+        getBallClass(num);
+
+
+      const colors =
+        getColorSet(num);
+
+
+      const size =
+        getSize(num);
+
+
+      elements.bigBall.textContent =
+        num || "—";
+
+
+      elements.bigBall.className =
+        "big-ball " +
+        ballClass;
+
+
+      if (
+        lastLatestIssue !==
+        latest.issueNumber
+      ) {
+
+        elements.bigBall.classList.remove(
+          "pop"
+        );
+
+
+        void elements.bigBall.offsetWidth;
+
+
+        elements.bigBall.classList.add(
+          "pop"
+        );
+
+
+        lastLatestIssue =
+          latest.issueNumber;
+
+      }
+
+
+      elements.latestIssue.textContent =
+        latest.issueNumber || "—";
+
+
+      if (
+        colors.length
+      ) {
+
+        elements.latestColors.innerHTML =
+          colors
+            .map(
+              color => `
+                <span class="pill ${color}">
+                  <span class="dot"></span>
+                  ${color}
+                </span>
+              `
+            )
+            .join("");
+
+      }
+
+
+      elements.latestSize.innerHTML =
+        size !== "—"
+
+          ? `
+            <span
+              class="size-badge ${size.toLowerCase()}"
+            >
+              ${size}
+            </span>
+          `
+
+          : `
+            <span class="size-badge">
+              —
+            </span>
+          `;
+
+    }
+
+
+    /*
+     * =========================================
+     * STATS
+     * =========================================
+     */
+
+    function renderStats() {
+
+      let red = 0;
+
+      let green = 0;
+
+      let violet = 0;
+
+      let big = 0;
+
+      let small = 0;
+
+
+      allResults.forEach(
+        result => {
+
+          const n =
+            parseInt(
+              result.number,
+              10
+            );
+
+
+          if (
+            Number.isNaN(n)
+          ) {
+
+            return;
+
+          }
+
+
+          const colors =
+            getColorSet(
+              result.number
+            );
+
+
+          if (
+            colors.includes("red")
+          ) {
+
+            red++;
+
+          }
+
+
+          if (
+            colors.includes("green")
+          ) {
+
+            green++;
+
+          }
+
+
+          if (
+            colors.includes("violet")
+          ) {
+
+            violet++;
+
+          }
+
+
+          if (
+            n >= 5
+          ) {
+
+            big++;
+
+          }
+          else {
+
+            small++;
+
+          }
+
+        }
+      );
+
+
+      elements.statTotal.textContent =
+        allResults.length.toLocaleString();
+
+
+      elements.statRed.textContent =
+        red.toLocaleString();
+
+
+      elements.statGreen.textContent =
+        green.toLocaleString();
+
+
+      elements.statViolet.textContent =
+        violet.toLocaleString();
+
+
+      elements.statBig.textContent =
+        big.toLocaleString();
+
+
+      elements.statSmall.textContent =
+        small.toLocaleString();
+
+    }
+
+
+    /*
+     * =========================================
+     * HISTORY
+     * =========================================
+     */
+
+    function renderHistory() {
+
+      if (
+        !allResults.length
+      ) {
+
+        elements.historyBody.innerHTML = `
+
+          <tr class="empty-row">
+
+            <td colspan="4">
+
+              No results yet.
+
+            </td>
+
+          </tr>
+
+        `;
 
         return;
 
@@ -531,50 +2408,289 @@
 
 
       const filtered =
-        records.filter(item =>
+        allResults.filter(
+          result => {
 
-          item.id
-            .toLowerCase()
-            .includes(q)
+            if (
+              currentFilter === "all"
+            ) {
 
-          ||
+              return true;
 
-          item.value
-            .toLowerCase()
-            .includes(q)
+            }
 
-          ||
 
-          item.type
-            .toLowerCase()
-            .includes(q)
+            const n =
+              parseInt(
+                result.number,
+                10
+              );
 
+
+            if (
+              Number.isNaN(n)
+            ) {
+
+              return false;
+
+            }
+
+
+            const colors =
+              getColorSet(
+                result.number
+              );
+
+
+            if (
+              currentFilter === "big"
+            ) {
+
+              return n >= 5;
+
+            }
+
+
+            if (
+              currentFilter === "small"
+            ) {
+
+              return n < 5;
+
+            }
+
+
+            return colors.includes(
+              currentFilter
+            );
+
+          }
         );
 
 
-      render(filtered);
+      if (
+        !filtered.length
+      ) {
+
+        elements.historyBody.innerHTML = `
+
+          <tr class="empty-row">
+
+            <td colspan="4">
+
+              No results match this filter.
+
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      let html = "";
+
+
+      for (
+        const result of filtered
+      ) {
+
+        const num =
+          result.number;
+
+
+        const ballClass =
+          getBallClass(num);
+
+
+        const colors =
+          getColorSet(num);
+
+
+        const size =
+          getSize(num);
+
+
+        const displayNum =
+          num || "—";
+
+
+        const colorPills =
+          colors.length
+
+            ? colors
+                .map(
+                  color => `
+                    <span class="pill ${color}">
+                      <span class="dot"></span>
+                      ${color}
+                    </span>
+                  `
+                )
+                .join("")
+
+            : `
+                <span class="pill">
+                  —
+                </span>
+              `;
+
+
+        const sizeBadge =
+          size !== "—"
+
+            ? `
+              <span
+                class="size-badge ${size.toLowerCase()}"
+              >
+                ${size}
+              </span>
+            `
+
+            : `
+              <span class="size-badge">
+                —
+              </span>
+            `;
+
+
+        html += `
+
+          <tr>
+
+            <td class="issue">
+              ${escapeHTML(
+                result.issueNumber || "—"
+              )}
+            </td>
+
+
+            <td>
+
+              <span
+                class="ball ${ballClass}"
+              >
+                ${escapeHTML(displayNum)}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div
+                class="color-pills"
+                style="justify-content:center"
+              >
+
+                ${colorPills}
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              ${sizeBadge}
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+
+
+      elements.historyBody.innerHTML =
+        html;
 
     }
-  );
 
 
-  loadHistory();
+    /*
+     * =========================================
+     * FILTERS
+     * =========================================
+     */
+
+    document
+      .querySelectorAll(
+        ".filter-btn"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              document
+                .querySelectorAll(
+                  ".filter-btn"
+                )
+                .forEach(
+                  btn =>
+                    btn.classList.remove(
+                      "active"
+                    )
+                );
 
 
-  /*
-   * Refresh the UI every 5 seconds.
-   *
-   * For a true Firestore realtime client,
-   * use Firebase onSnapshot in the browser.
-   */
+              button.classList.add(
+                "active"
+              );
 
-  setInterval(
-    loadHistory,
-    5000
-  );
 
-</script>
+              currentFilter =
+                button.dataset.f;
+
+
+              renderHistory();
+
+            }
+          );
+
+        }
+      );
+
+
+    /*
+     * =========================================
+     * START
+     * =========================================
+     */
+
+    startRealtimeListener();
+
+
+    /*
+     * Initial API update
+     */
+
+    updateResults();
+
+
+    /*
+     * Fetch every 30 seconds
+     */
+
+    setInterval(
+      updateResults,
+      30000
+    );
+
+
+    toast(
+      "Real-time connection started",
+      "success"
+    );
+
+  </script>
 
 </body>
-
 </html>
